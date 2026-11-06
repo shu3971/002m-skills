@@ -1,0 +1,1 @@
+{"$schema":"https://www.schemastore.org/claude-code-plugin.json","author":{"name":"002M 画境"},"description":"002M 画境官方 Agent Skills：002m-gen 写真生图 + 002m-tryon AI 试衣间 (Official 002M skills: portrait generation and AI clothing try-on)","homepage":"https://002m.com","license":"MIT","name":"002m","repository":"https://github.com/shu3971/002m-skills","version":"1.0.1"}
