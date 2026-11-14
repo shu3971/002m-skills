@@ -43,9 +43,12 @@
   "image": "照片的 base64（可选，有照片时传）",
   "mime": "image/jpeg",
   "size": "1152x1536",
-  "code": "付费码（可选，一般不传）"
+  "code": "付费码（可选，一般不传）",
+  "source": "skill-gen"
 }
 ```
+
+- `source`：来源标记。本技能固定发 `skill-gen`；网页端不传，服务器默认记 `web`。仅用于日报按来源分用户数，不参与计费。服务器只认白名单（web/skill-gen/skill-tryon/atlas/tryon-web），其余值按 `web` 计。
 
 - `prompt`：必填。英文提示词效果最好；中文提示词也可以，模型能读。
 - `image`：有照片时传 base64（不带 `data:` 前缀）。有照片走 image-to-image（保脸、保衣服）；没照片走纯文生图。

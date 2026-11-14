@@ -224,7 +224,7 @@ def cmd_gen(prompt, photo, out, size):
     if size not in SIZES:
         print("gen failed: --size must be one of %s" % (", ".join(SIZES)), file=sys.stderr)
         return 1
-    payload = {"prompt": prompt, "size": size}
+    payload = {"prompt": prompt, "size": size, "source": "skill-gen"}
     if photo:
         mime, _ = mimetypes.guess_type(photo)
         if mime not in ("image/jpeg", "image/png"):

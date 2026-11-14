@@ -13,9 +13,12 @@
   "prompt": "中文换装提示词（见下）",
   "image": "复合图的 base64（JPEG，无 data: 前缀）",
   "mime": "image/jpeg",
-  "size": "1152x1536"
+  "size": "1152x1536",
+  "source": "skill-tryon"
 }
 ```
+
+- `source`：来源标记。本技能固定发 `skill-tryon`；网页端不传，服务器默认记 `web`。仅用于日报按来源分用户数，不参与计费。服务器只认白名单（web/skill-gen/skill-tryon/atlas/tryon-web），其余值按 `web` 计。
 
 ### 复合图怎么拼（stitchTryon，脚本已复刻）
 

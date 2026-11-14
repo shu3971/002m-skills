@@ -13,7 +13,7 @@ examples_en:
 - "Try this dress on my photo"
 - "Show me how this white shirt looks on me"
 - "Put this top and trousers set on my photo"
-version: 1.0.1
+version: 1.0.2
 author: "002M 画境"
 ---
 

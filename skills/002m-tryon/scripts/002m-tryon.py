@@ -247,6 +247,7 @@ def cmd_gen(photo, pose, cloths, scene, out):
         "image": base64.b64encode(composite).decode("ascii"),
         "mime": "image/jpeg",
         "size": "1152x1536",
+        "source": "skill-tryon",
     }
     status, body = call("POST", "/api/gen", payload, timeout=180)
     if status != 200 or not body.get("image"):

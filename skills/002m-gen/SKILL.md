@@ -13,7 +13,7 @@ examples_en:
 - "Find an autumn portrait prompt for my social post"
 - "Generate a qipao portrait from this photo"
 - "Give me a prompt for a best-friends portrait"
-version: 1.0.1
+version: 1.0.2
 author: "002M 画境"
 ---
 
