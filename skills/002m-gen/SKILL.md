@@ -8,12 +8,10 @@ description_en: "002M homepage image generation: find a portrait prompt by scene
 examples_zh:
 - "找一个适合发朋友圈的秋日写真提示词"
 - "用这张照片生成一张旗袍写真"
-- "给我一个适合闺蜜合照的提示词"
 - "把这组照片里的人脸都换成我这张脸"
 examples_en:
 - "Find an autumn portrait prompt for my social post"
 - "Generate a qipao portrait from this photo"
-- "Give me a prompt for a best-friends portrait"
 - "Swap my face onto these reference photos"
 version: 1.0.3
 author: "002M 画境"
