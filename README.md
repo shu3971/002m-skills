@@ -6,7 +6,7 @@ Official Agent Skills from [002M 画境](https://002m.com) — a Chinese AI port
 
 | Skill | What it does |
 | --- | --- |
-| `skills/002m-gen/` | 002M 主页生图：按场景找写真提示词，用一张照片生成同款写真照；查额度、核销付费码 |
+| `skills/002m-gen/` | 002M 主页生图：按场景找写真提示词，用一张照片生成同款写真照，套图批量换脸；查额度、核销付费码 |
 | `skills/002m-tryon/` | 002M 试衣间：传一张人物照片 + 一件/一套衣服（可选姿势），生成换装照 |
 
 ## Install / 安装

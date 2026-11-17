@@ -2,18 +2,20 @@
 name: 002m-gen
 display_name: 002M 主页生图
 display_name_en: 002M Image Studio · Gen
-description: 002M 画境主页生图：找写真提示词、用照片生成写真照。
-description_zh: 002M 画境主页的生图能力：按场景找写真提示词，用一张照片生成同款写真照。
-description_en: "002M homepage image generation: find a portrait prompt by scene, generate a portrait photo from your picture."
+description: 002M 画境主页生图：找写真提示词、用照片生成写真照、批量套图换脸。
+description_zh: 002M 画境主页的生图能力：按场景找写真提示词，用一张照片生成同款写真照，或把自己的脸换到一组参考图上。
+description_en: "002M homepage image generation: find a portrait prompt by scene, generate a portrait photo from your picture, or face-swap your face onto a batch of reference images."
 examples_zh:
 - "找一个适合发朋友圈的秋日写真提示词"
 - "用这张照片生成一张旗袍写真"
 - "给我一个适合闺蜜合照的提示词"
+- "把这组照片里的人脸都换成我这张脸"
 examples_en:
 - "Find an autumn portrait prompt for my social post"
 - "Generate a qipao portrait from this photo"
 - "Give me a prompt for a best-friends portrait"
-version: 1.0.2
+- "Swap my face onto these reference photos"
+version: 1.0.3
 author: "002M 画境"
 ---
 
@@ -29,6 +31,7 @@ author: "002M 画境"
 - 用照片生成写真照（“用这张照片生成……”“把我 P 成……”）
 - 查 002M 生成额度（“还剩几次”“免费额度”）
 - 核销 002M 付费码（用户主动给码时）
+- 套图换脸（“把这几个模板的脸换成我的”“批量换脸”）
 
 与写真、提示词、生图无关的请求不要用这个技能。需要给人物换衣服、换装的走「002M 试衣间」。
 
@@ -64,6 +67,36 @@ author: "002M 画境"
 - 用户照片只发给 gen.002m.com 用于本次生成，不存原照片；成图在服务器存 30 天。
 - 不要把用户照片上传到任何其他地方。
 
+## 能力四：套图换脸（批量保脸）
+
+用户有一张头像（定脸用）和一张或多张参考图（服装、姿势、背景已经拍好的成片），要求“把脸换成我的 / 这套图都换成我”，就用这个能力。除脸以外的一切（衣服、姿势、背景、光线、构图、画幅）都保持不变。
+
+### 命令
+
+```
+python3 scripts/002m-gen.py faceswap --avatar <头像路径> --ref <参考图1> [--ref <参考图2> ...] --out <输出目录>
+```
+
+- 每张参考图独立生成一张、各扣 1 次额度；某张失败只跳过它，不影响后面的图。
+- `--ref` 可以重复多次；不支持 `--ref a.jpg b.jpg` 这种一次多值的写法。
+- 输出文件名：`<参考图文件名>-faceswap.png`（参考图是 JPEG 时先按 `.jpg` 占位，服务器返回 PNG 就存成 `.png`）。
+- 头像要求：正脸、五官清晰、光线正常、无遮挡；JPG/PNG、单张 ≤20 MB。
+- 参考图要求：JPG/PNG、≤20 MB。脚本只支持这两种格式，HEIC/WebP 请用户先转成 JPG。
+- 顺序很重要：脚本内部固定按「参考图在前、头像在后」发（`images: [参考图, 头像]`），提示词与 002M 网页「套图模式」逐字一致。不要自己改顺序或改提示词，否则会变成重新生成整张图。
+- 出图尺寸由参考图方向决定：横图 1536x1024、方图 1024x1024、竖图 1024x1536。
+
+### 回复用户
+
+- 先查额度再跑：`python3 scripts/002m-gen.py status`，告诉用户这批图会扣几张（每张成功 1 次，失败不扣）。
+- 跑完按脚本输出汇总：成功几张、跳过几张、存在哪个目录。跳过的图说明原因（格式不支持 / 上游失败 / 超时）。
+- 生成较慢（单张通常 30–90 秒，服务繁忙时更久）。脚本在响应超时后会去历史图里按提示词和时间回捞，最多等约 90 秒；回捞到就按成功处理，回捞不到才跳过。
+
+### 边界
+
+- 一次最多 12 张参考图（与网页端一致）；超过就分批跑。
+- 只换一张脸：多人合影里想换多个人，当前接口做不到，告诉用户改用网页的「双人换脸」入口。
+- 参考图里没有清晰人脸、或者人脸太小/侧脸/被遮挡时，效果会差，建议用户换图。
+
 ## 能力三：查额度
 
 跑 `python3 scripts/002m-gen.py status`，直接报：免费剩余几张、付费余额几张。不用解释太多。
@@ -71,6 +104,7 @@ author: "002M 画境"
 ## 注意事项
 
 - 生成失败不扣额度（服务器只在出图成功后扣）。失败时看脚本报的错：网络问题稍后重试；`上游未出图`稍后重试；额度问题按上面付费流程走。
+- 套图换脸与普通生成共用同一份额度；批量跑之前先报总张数，避免跑到一半没额度。
 - 提示词里的 `[HUMAN]`、`[FEATURE]`、`[TEXT]` 这类占位符是变量，生成前要换成具体内容（比如把 `[TEXT]` 换成用户要印的字），不要原样发给模型。
 - 涉及真人明星、一眼能认出的公众人物、未成年人时，拒绝生成并说明原因。
 - 完整案例库、姿势库、服装库在 002m.com。

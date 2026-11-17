@@ -41,3 +41,20 @@
 用户：直接生成一张赛博朋克风格的肖像，不要照片
 
 技能：跑 `python3 scripts/002m-gen.py gen --prompt "<英文提示词>" --out ~/Desktop/002m-cyber.png`（不带 --photo），纯文生图。并提醒用户：没照片是纯凭提示词画的，不保脸；想要自己的脸，传一张照片再生成。
+
+## 例 6：套图换脸（批量）
+
+用户：这 3 张写真的脸都换成我这张自拍（附头像 selfie.jpg 和 ref1.jpg、ref2.jpg、ref3.jpg）
+
+技能：
+1. 先跑 `python3 scripts/002m-gen.py status`：免费剩 2 张，告诉用户“3 张里这次能出 2 张，第 3 张会因额度不足失败（失败不扣）”。
+2. 跑：
+   `python3 scripts/002m-gen.py faceswap --avatar selfie.jpg --ref ref1.jpg --ref ref2.jpg --ref ref3.jpg --out ~/Desktop/002m-faceswap`
+3. 回复：成功 2 张、跳过 1 张（额度不足），文件在 ~/Desktop/002m-faceswap，衣服和背景保持原样，只换了脸。
+
+## 例 7：参考图格式不支持
+
+用户：这几张 HEIC 能换吗？
+
+技能：脚本只认 JPG/PNG。先让用户转成 JPG（macOS 预览“导出”或 `sips -s format jpeg`），再跑 faceswap；不要自己装第三方库转码。
+
